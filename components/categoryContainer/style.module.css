@@ -1,0 +1,15 @@
+.container{
+    height: 40px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 7px;
+    padding-left: 6px;
+    padding-right: 6px;
+    color: blueviolet;
+
+}
+
+.expandButton{
+    padding-top: 5px;
+}
