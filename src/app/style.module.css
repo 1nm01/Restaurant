@@ -42,7 +42,8 @@
 }
 
 .footer { 
-    text-align: right;
+    display: flex;
+    justify-content: right;
     height: 40px; 
     position: fixed; 
     bottom:0%;

@@ -8,37 +8,57 @@ import { useDispatch, useSelector } from 'react-redux';
 import {incremented, decremented} from '../../redux/reducer'
 function ItemContainer(props) {
     const [count, setCount] = useState(0);
-    const presentCount = useSelector((state)=>{
-        if(props.items.itemName in state)
-        return state[props.items.itemName].count
-        else return 0
-    });
-    const dispatch = useDispatch();
+    // const presentCount = useSelector((state)=>{
+    //     if(props.items.itemName in state)
+    //     return state[props.items.itemName].count
+    //     else return 0
+    // });
+    // const dispatch = useDispatch();
     useEffect(()=>{
-        setCount(presentCount);
+        setCount(!!window.sessionStorage.getItem("Order^" + props.items.itemName)? JSON.parse(window.sessionStorage.getItem("Order^" +props.items.itemName)).count : 0);
     },[])
     const handleClick=()=>{
-        const action = {
-            ...props.items
-        }
-        dispatch(incremented(action))
+        // const action = {
+        //     ...props.items
+        // }
+        // dispatch(incremented(action))
+        window.sessionStorage.setItem("Order^" + props.items.itemName,JSON.stringify({
+            ...props.items,
+            count:1
+        }))
         setCount(1);
     }
     const handleMinus=()=>{
-        const action = {
-                ...props.items
-        }
-        dispatch(decremented(action))
+        // const action = {
+        //         ...props.items
+        // }
+        // dispatch(decremented(action))
+        count !== 1 ? 
+        window.sessionStorage.setItem("Order^" + props.items.itemName, JSON.stringify({
+            ...props.items,
+            count: count-1
+        }))
+        : window.sessionStorage.removeItem("Order^" + props.items.itemName)
         setCount(count-1);
+        if(!!props.handleChange){
+            props.handleChange(props.items, count-1);
+        }
     }
     const handlePlus=()=>{
-        const action = {
-            ...props.items 
-        }
-        dispatch(incremented(action))
+        // const action = {
+        //     ...props.items 
+        // }
+        // dispatch(incremented(action))
+        window.sessionStorage.setItem("Order^" + props.items.itemName, JSON.stringify({
+            ...props.items,
+            count: count+1
+        }))
         setCount(count+1);
+        if(!!props.handleChange){
+            props.handleChange(props.items, count+1);
+        }
     }
-    console.log(presentCount);
+    // console.log(presentCount);
   return (
     <>
         <div className={style.container}>
