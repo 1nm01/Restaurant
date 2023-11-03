@@ -5,12 +5,8 @@ import style from './style.module.css'
 import Header from '../../../components/header'
 import axios from "axios";
 function Cart() {
-  // await temp();
-  // console.log(props);
   const [cartData, setCartData] = useState([])
   const [bill, setBill] = useState(0);
-  const [fname, setFname] = useState();
-  const [mobile, setMobile] = useState();
   useEffect(()=>{
    let data = []
     for(let key of Object.keys(window.sessionStorage)){
@@ -23,15 +19,6 @@ function Cart() {
     setCartData(data);
     setBill(data.reduce((total, individual) => individual.price*individual.count + total, 0));
   }, [])
-
-  const handleUserData = (event) =>{
-    if(event.target.name==="fname"){
-      setFname(event.target.value);
-    }
-    else if(event.target.name==="mobile"){
-      setMobile(event.target.value);
-    }
-  }
 
   const handleChange =(item, count)=>{
     const index = cartData.findIndex(value => value.itemName === item.itemName);
@@ -49,11 +36,15 @@ function Cart() {
     setBill(cartData.reduce((total, individual) => individual.price*individual.count + total, 0));
   }
   
-  const handlePlaceOrder=()=>{
+  const handlePlaceOrder=(event)=>{
+    event.preventDefault();
     const fcmServerKey = 'AAAAiZkwSEk:APA91bGbT2wtxei4zl8UsxYbJEVXFY7H0sgj8dEBzDED5JU-R5QZirYv-e4rj2cJkQXTwpHrRmdSr_gMWEVs10C4E4hZo5TaoPHG-Efn_79d8B3FVy9QLOoGZceNlaBUjCveZl90SQBl';
 
       // FCM endpoint for sending notifications
       const fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
+
+      const fname = event.target.fname.value;
+      const mobile = event.target.mobile.value;
 
       let generateBody = "";
       for(let element of cartData){
@@ -98,23 +89,24 @@ function Cart() {
             })
         }
         <br/>
-    <form>
+    <form  onSubmit={handlePlaceOrder}>
       <label>Name: &nbsp;&nbsp;</label>
-    <input type="text" name="fname" style={{color:'black'}} onChange={handleUserData} value={fname}/>
+    <input type="text" name="fname" style={{color:'black'}}  required/>
     <br/>
     <br/>
     <label>Mobile: &nbsp;</label>
-    <input type="number" onChange={handleUserData} name="mobile" style={{color:'black'}} value={mobile}/>
-    </form>
-
+    <input type="text"  name="mobile" style={{color:'black'}}  required pattern="[0-9]{10}" title="Please enter valid mobile number"/>
     <div className={style.footer} >
       <div>
         Total bill {bill}
       </div>
       <div className={style.button69}>
-        <span className={style.buttonText} onClick={handlePlaceOrder}>Place order</span>
+        <button className={style.buttonText} type="submit">Place order</button>
       </div>
     </div>
+    </form>
+
+    
 
     </>
   )
