@@ -4,9 +4,13 @@ import ItemContainer from '../../../components/itemContainer'
 import style from './style.module.css'
 import Header from '../../../components/header'
 import axios from "axios";
+import { useRouter } from 'next/navigation';
+
 function Cart() {
   const [cartData, setCartData] = useState([])
   const [bill, setBill] = useState(0);
+  const [success, setSuccess] = useState(0);
+  const history = useRouter();
   useEffect(()=>{
    let data = []
     for(let key of Object.keys(window.sessionStorage)){
@@ -20,6 +24,14 @@ function Cart() {
     setBill(data.reduce((total, individual) => individual.price*individual.count + total, 0));
   }, [])
 
+  useEffect(()=>{
+    if(success == 1){
+      history.push("/success")
+    }
+    else if(success == 2){
+      history.push("failure")
+    }
+  },[success])
   const handleChange =(item, count)=>{
     const index = cartData.findIndex(value => value.itemName === item.itemName);
     if(count === 0){
@@ -73,6 +85,12 @@ function Cart() {
       axios.post(fcmEndpoint, notificationData, { headers })
         .then((response) => {
           console.log('Notification sent successfully:', response.data);
+          if(response.data.success){
+            setSuccess(1);
+          }
+          else if(response.data.failure){
+            setSuccess(2);
+          }
         })
         .catch((error) => {
           console.error('Error sending notification:', error);
@@ -81,7 +99,7 @@ function Cart() {
   
   return (
     <>
-    <Header></Header>
+    <Header back={true}></Header>
       {cartData.map((value,index)=>{
                 return (
                     <ItemContainer items={value} key={index+value.itemId} handleChange={handleChange}/>
