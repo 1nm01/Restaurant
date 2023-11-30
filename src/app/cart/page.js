@@ -66,7 +66,7 @@ function Cart() {
       // Notification data (you can customize this as needed)
       const notification = {
         to: window.sessionStorage.getItem("token"),
-        notification: {
+        data: {
           title: `${fname};${mobile};${bill}`,
           body: `${generateBody}`,
         },
