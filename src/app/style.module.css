@@ -53,3 +53,9 @@
     padding-top: 5px;
     padding-right: 5px;
 }
+
+.desktop{
+  text-align: center;
+  font-size: 4rem;
+  color: #8614f8;
+}

@@ -7,9 +7,10 @@ import Link from "next/link"
 import buttonStyle from '../../src/app/cart/style.module.css'
 import Image from 'next/image'
 function Home(props) {
-  const[foodMap, setFoodMap] = useState(props.data.foodMapBeverage)
+  const[foodMap, setFoodMap] = useState(props.data.foodMapBeverage);
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(()=>{
-
+    setIsMobile(window.innerWidth < 768);
       window.sessionStorage.setItem("restName", props.data.restName);
       window.sessionStorage.setItem("token", props.data.token);
 
@@ -27,6 +28,7 @@ function Home(props) {
     }
   return (
     <>
+    {isMobile ? <>
     <div className={style.buttonSection}>
       <button className={[style.button69,"mr-6" ].join(' ')} onClick={()=>handleClick("beverages")}>Beverages</button>
       <button className={[style.button69,"mr-6" ].join(' ')} onClick={()=>handleClick("food")}>Food</button>
@@ -49,6 +51,10 @@ function Home(props) {
       <Link href={{pathname:"/cart"}}>
       <div className={style.footer} ><div className={buttonStyle.button69}><span className={buttonStyle.buttonText}>Go to cart</span></div></div>
       </Link>
+      </> 
+      : <div className={style.desktop}>
+          Available for Mobile devices only
+        </div>}
     </>
   )
 }
