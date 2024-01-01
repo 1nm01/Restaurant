@@ -5,7 +5,7 @@ import Expand from '../../public/expand.svg'
 import Collapse from '../../public/collapse.svg'
 import Image from 'next/image'
 import ItemContainer from '../itemContainer';
-function index(props) {
+function CategoryContainer(props) {
     const [expand, setExpand] = useState(true);
     const handleToggle=(event)=>{
         setExpand(!expand);
@@ -39,4 +39,4 @@ function index(props) {
   )
 }
 
-export default index
+export default CategoryContainer
